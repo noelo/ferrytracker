@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello WebSocket</title>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script src="sockjs-0.3.4.js"></script>
+    <script src="stomp.js"></script>
+    <script src="planeObject.js"></script>
+    <link rel="stylesheet" type="text/css" href="map-icons/dist/css/map-icons.css">
+    <script src="map-icons/dist/js/map-icons.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script type="text/javascript">
+
+        var stompClient = null;
+        var Googlemap = null;
+        var vehicles = {};
+
+        function initialize() {
+            var mapProp = {
+                center:new google.maps.LatLng(-33.846415,151.1856348),
+                zoom:12,
+                mapTypeId:google.maps.MapTypeId.ROADMAP
+            };
+            Googlemap=new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+        
+        <!--function setConnected(connected) {-->
+            <!--document.getElementById('connect').disabled = connected;-->
+            <!--document.getElementById('disconnect').disabled = !connected;-->
+        <!--}-->
+        
+        function connect() {
+            var socket = new SockJS('/hello');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function(frame) {
+                <!--setConnected(true);-->
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/greetings', function(greeting){
+                    showLocations(JSON.parse(greeting.body));
+                });
+            });
+        }
+        
+        <!--function disconnect() {-->
+            <!--if (stompClient != null) {-->
+                <!--stompClient.disconnect();-->
+            <!--}-->
+            <!--setConnected(false);-->
+            <!--console.log("Disconnected");-->
+        <!--}-->
+
+        
+        function showLocations(message) {
+            console.log("Handling info "+message.vehiclelName);
+			    if (vehicles[message.vehiclelName]) {
+			        console.log("found existing object");
+				    var plane = vehicles[message.vehiclelName];
+			    } else {
+			        console.log("New object");
+				    var plane = jQuery.extend(true, {}, planeObject);
+			    }
+
+                plane.funcUpdateData(message,Googlemap);
+                vehicles[message.vehiclelName] = plane;
+
+
+
+            <!--var myLatlng = new google.maps.LatLng(message.latitude,message.longtitude);-->
+            <!--var marker = new google.maps.Marker({-->
+                <!--position: myLatlng,-->
+                <!--title:message.vehiclelName-->
+            <!--});-->
+
+
+            <!--marker.setMap(map);-->
+
+        }
+
+        document.addEventListener('DOMContentLoaded', function() { connect();}, false);
+
+
+    </script>
+</head>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div>
+    <!--<div>-->
+        <!--<button id="connect" onclick="connect();">Connect</button>-->
+        <!--<button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>-->
+    <!--</div>-->
+    <div id="googleMap" style="width:1200px;height:600px;"></div>
+
+</div>
+</body>
+</html>
