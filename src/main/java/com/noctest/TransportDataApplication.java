@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 public class TransportDataApplication {
 
     public static void main(String[] args) {
+        System.out.println("Starting up");
         SpringApplication.run(TransportDataApplication.class, args);
     }
 }
