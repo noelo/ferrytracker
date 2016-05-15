@@ -4,52 +4,16 @@ var planeObject = {
 	oldalt		: null,
 
 	// Basic location information
-//	altitude	: null,
 	speed		: null,
 	track		: null,
 	latitude	: null,
 	longitude	: null,
-	
-//	// Info about the plane
-//	flight		: null,
-//	squawk		: null,
-//	icao		: null,
-//	is_selected	: false,
 
-	// Data packet numbers
-//	messages	: null,
-//	seen		: null,
-
-	// Vaild...
-//	vPosition	: false,
-//	vTrack		: false,
 
 	// GMap Details
 	marker		: null,
-//	markerColor	: MarkerColor,
-//	lines		: [],
-//	trackdata	: new Array(),
-//	trackline	: new Array(),
 
-	// When was this last updated?
-//	updated		: null,
-//	reapable	: false,
 
-	// Appends data to the running track so we can get a visual tail on the plane
-	// Only useful for a long running browser session.
-//	funcAddToTrack	: function(){
-//			// TODO: Write this function out
-//			this.trackdata.push([this.latitude, this.longitude, this.altitude, this.track, this.speed]);
-//			this.trackline.push(new google.maps.LatLng(this.latitude, this.longitude));
-//		},
-
-	// This is to remove the line from the screen if we deselect the plane
-//	funcClearLine	: function() {
-//			if (this.line) {
-//				this.line.setMap(null);
-//				this.line = null;
-//			}
-//		},
 
 	// Should create an icon for us to use on the map...
 	funcGetIcon	: function() {
@@ -118,39 +82,8 @@ var planeObject = {
 			this.longitude	= data.longtitude;
 			this.name=data.vehiclelName;
 
+			this.marker = this.funcUpdateMarker(gmap);
 
-
-//				this.vPosition = true;
-//
-//				// Detech if the plane has moved
-//				changeLat = false;
-//				changeLon = false;
-//				changeAlt = false;
-//				if (oldlat != this.latitude) {
-//					changeLat = true;
-//				}
-//				if (oldlon != this.longitude) {
-//					changeLon = true;
-//				}
-//				if (oldalt != this.altitude) {
-//					changeAlt = true;
-//				}
-//				// Right now we only care about lat/long, if alt is updated only, oh well
-//				if ((changeLat == true) || (changeLon == true)) {
-//					this.funcAddToTrack();
-//					if (this.is_selected) {
-//						this.line = this.funcUpdateLines();
-//					}
-//				}
-				this.marker = this.funcUpdateMarker(gmap);
-//				PlanesOnMap++;
-
-
-//			// Do we have a valid track for the plane?
-//			if (data.validtrack == 1)
-//				this.vTrack = true;
-//			else
-//				this.vTrack = false;
 		},
 
 	// Update our marker on the map
@@ -158,7 +91,6 @@ var planeObject = {
 
 			if (this.marker) {
 				this.marker.setPosition(new google.maps.LatLng(this.latitude, this.longitude));
-//				this.marker.setIcon(this.funcGetIcon());
 
 			} else {
 			    this.marker = new Marker({
@@ -174,36 +106,6 @@ var planeObject = {
                     		},
                     		map_icon_label: '<span class="map-icon map-icon-boat-tour"></span>'
                     	});
-
-
-
-
-
-//                	icon: {
-//                		path: SQUARE_PIN,
-//                        scale: 0.4,
-//                        fillOpacity: 0.9,
-//                		fillColor: '#1998F7',
-//                		strokeColor: '',
-//                		strokeWeight: 0
-//                	},
-//                	title: this.name ,
-////                    anchor: new google.maps.Point(32, 32),
-//                	map_icon_label: '<span class="map-icon map-icon-boat-tour"></span>'
-//                });
-
-
-
-
-
-//				this.marker = new google.maps.Marker({
-//					position: new google.maps.LatLng(this.latitude, this.longitude),
-//					map: gmap,
-////					icon: this.funcGetIcon(),
-//					title: this.name    ,
-//					anchor: new google.maps.Point(32, 32),
-//					visable: true
-//				});
 
 			}
 

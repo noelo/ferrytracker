@@ -20,7 +20,7 @@ public class WSSender {
     }
 
     public void deliver(String message) {
-        this.template.convertAndSend("/topic/greetings", message);
+        this.template.convertAndSend("/topic/ferry/location", message);
     }
 
 
