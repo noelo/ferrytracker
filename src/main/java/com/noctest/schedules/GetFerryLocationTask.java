@@ -25,8 +25,8 @@ import java.util.Map;
  */
 
 @Component
-public class GetBusLocationTask {
-    private static final Logger log = LoggerFactory.getLogger(GetBusLocationTask.class);
+public class GetFerryLocationTask {
+    private static final Logger log = LoggerFactory.getLogger(GetFerryLocationTask.class);
 
     @Autowired
     private TokenRepoIF tokenRepo;
@@ -77,7 +77,7 @@ public class GetBusLocationTask {
                 }
                 log.info(" Unique entities "+entitymap.keySet().size());
                 for (String key : entitymap.keySet()){
-                    log.info(entitymap.get(key));
+                    log.debug(entitymap.get(key));
                     WSClient.deliver(entitymap.get(key));
                 }
             } else {

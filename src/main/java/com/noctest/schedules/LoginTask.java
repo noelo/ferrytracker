@@ -38,7 +38,6 @@ public class LoginTask {
 
     public void work() {
 
-//        String plainCreds = "l7xx3916da54a38940bc91c03187eb2f077e:cd6bf4ff815a48c48e26da4fe1ce7f24";
         String plainCreds = apiKey+":"+sharedSecret;
         byte[] plainCredsBytes = plainCreds.getBytes();
         byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
